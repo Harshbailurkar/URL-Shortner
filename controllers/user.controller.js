@@ -1,10 +1,9 @@
 import User from "../models/users.models.js";
-import URLs from "../models/url.models.js";
 import { v4 as uuidv4 } from "uuid";
+import { setUser } from "../service/auth.js";
 
 async function handleUserSignup(req, res) {
   const { name, email, password } = req.body;
-  const allurls = await URLs.find({});
   User.create({ name, email, password })
     .then((user) => {
       res.status(201).redirect("/");
@@ -20,6 +19,8 @@ async function handleLoginUser(req, res) {
     return res.status(400).json({ error: "user not found" });
   }
 
+  const token = setUser(user);
+  res.cookie("uid", token);
   return res.status(200).redirect("/");
 }
 

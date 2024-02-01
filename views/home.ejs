@@ -5,6 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>
   </head>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff;
+    }
+
+    form {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    form.delete-form {
+      display: inline-block;
+    }
+
+    button.delete-btn {
+      background-color: #dc3545;
+    }
+  </style>
   <body>
     <h1>URL shortner</h1>
     <% if(locals.id){ %>
@@ -31,7 +108,12 @@
           <td>localhost:8001/url/<%= url.shortId %></td>
           <td><%= url.redirectURL %></td>
           <td><%= url.visitHistory.length %></td>
-          <td><button>delete</button></td>
+          <td>
+            <form action="/url/<%= url.shortId %>" method="POST">
+              <input type="hidden" name="_method" value="DELETE" />
+              <button type="submit">delete</button>
+            </form>
+          </td>
         </tr>
         <% }); %>
       </tbody>
