@@ -6,7 +6,7 @@ async function handleUserSignup(req, res) {
   const { name, email, password } = req.body;
   User.create({ name, email, password })
     .then((user) => {
-      res.status(201).redirect("/");
+      res.status(201).redirect("/login");
     })
     .catch((err) => {
       res.status(400).json({ err });
