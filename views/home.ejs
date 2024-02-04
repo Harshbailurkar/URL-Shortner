@@ -27,7 +27,9 @@
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
+    .formButton {
+      text-align: center;
+    }
     label {
       display: block;
       margin-bottom: 10px;
@@ -49,7 +51,14 @@
       border-radius: 4px;
       cursor: pointer;
     }
-
+    #BTAU {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
     table {
       width: 100%;
       margin-top: 20px;
@@ -83,16 +92,32 @@
     }
   </style>
   <body>
-    <h1>URL shortner</h1>
-    <% if(locals.id){ %>
-    <p>URL Generated : http://localhost:8001/url/<%= id %></p>
-    <% } %>
+    <div
+      style="display: flex; justify-content: space-between; align-items: center"
+    >
+      <h1 style="margin-left: 42%">URL shortener</h1>
+
+      <button type="submit" style="height: 4em; margin-right: 1em">
+        Logout
+      </button>
+    </div>
+
     <form action="/url" method="POST">
       <label>Enter Your URL</label>
       <input type="text" name="url" placeholder="Enter URL" />
       <button type="submit">Shorten URL</button>
     </form>
-    <% if(locals.urls) %>
+    <% if(locals.id){ %>
+
+    <form action="/" method="get" class="formButton">
+      <p>
+        URL Generated :<a href="http://localhost:8001/url/<%= id %>">
+          http://localhost:8001/url/<%= id %>
+        </a>
+      </p>
+      <button type="submit" id="BTAU">Back to the all URLs</button>
+    </form>
+    <% } %> <% if(locals.urls) {%>
     <table border="1">
       <thead>
         <th>S.no</th>
@@ -118,5 +143,6 @@
         <% }); %>
       </tbody>
     </table>
+    <%}%>
   </body>
 </html>

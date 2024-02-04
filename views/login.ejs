@@ -70,6 +70,11 @@
   <body>
     <div id="align">
       <h1>Login</h1>
+      <% if(locals.error) {%>
+      <div align="center">
+        <p style="color: red"><%= error %></p>
+      </div>
+      <% } %>
       <form action="/user/login" method="POST">
         <label for="email">Email</label>
         <input type="email" name="email" required />

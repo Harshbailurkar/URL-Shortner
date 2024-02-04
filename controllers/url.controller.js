@@ -12,20 +12,36 @@ async function handleGenerateNewShortURL(req, res) {
     shortId: shortId,
     redirectURL: body.url,
     visitHistory: [],
+    createdBy: req.user._id,
   });
 
   try {
-    const allUrls = await URLs.find({});
-    return res.render("home", {
-      id: shortId,
-      urls: allUrls,
-    });
+    return res.render("home", { id: shortId });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal Server Error");
   }
 }
-
+async function handleRedirect(req, res) {
+  const shortId = req.params.shortId;
+  console.log(shortId);
+  const entry = await URLs.findOneAndUpdate(
+    { shortId },
+    {
+      $push: {
+        visitHistory: {
+          timeStamp: Date.now(),
+        },
+      },
+    }
+  );
+  console.log(entry);
+  if (entry) {
+    res.redirect(entry.redirectURL);
+  } else {
+    res.status(404).send("Entry not found");
+  }
+}
 async function handleGetAnalytics(req, res) {
   const shortId = req.params.shortId;
   const result = await URLs.findOne({ shortId });
@@ -46,4 +62,9 @@ async function handleDeleteUrl(req, res) {
     res.status(500).send("Internal Server Error");
   }
 }
-export { handleGenerateNewShortURL, handleGetAnalytics, handleDeleteUrl };
+export {
+  handleGenerateNewShortURL,
+  handleGetAnalytics,
+  handleDeleteUrl,
+  handleRedirect,
+};
