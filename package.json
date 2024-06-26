@@ -5,7 +5,7 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node -r dotenv/config app.js",
     "dev": "nodemon app.js"
   },
   "author": "",

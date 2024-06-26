@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
 import urlRoute from "./routes/url.routes.js";
 import connectToMongoDB from "./connect.js";
@@ -9,12 +8,13 @@ import UserRoute from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
 import { restrictToLoginUserOnly, checkAuth } from "./middleware/auth.js";
 
+dotenv.config({
+  path: "./.env",
+});
 const app = express();
-const PORT = 8001;
+const PORT = process.env.PORT || 8001;
 
-connectToMongoDB("mongodb://127.0.0.1:27017/shortURL").then(
-  console.log("mongoDB connected")
-);
+connectToMongoDB(process.env.MONGO_URL).then(console.log("mongoDB connected"));
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -26,4 +26,4 @@ app.use("/url", restrictToLoginUserOnly, urlRoute);
 app.use("/user", UserRoute);
 app.use("/", checkAuth, StaticRouter);
 
-app.listen(PORT, () => console.log(`app running on localhost:${PORT}`));
+app.listen(PORT, () => console.log(`app running on PORT:${PORT}`));
